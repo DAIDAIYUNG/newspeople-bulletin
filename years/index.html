@@ -1,0 +1,17 @@
+---
+layout: default
+title: 年份索引
+---
+
+<h1>年份索引</h1>
+
+<ul>
+  {% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+  {% for year in years %}
+    <li>
+      <a href="{{ '/years/' | append: year.name | append: '/' | relative_url }}">
+        {{ year.name }} 年
+      </a>
+    </li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,18 @@
+---
+layout: default
+---
+
+<h1>{{ page.year }} 年文章</h1>
+
+<ul>
+  {% for post in site.posts %}
+    {% if post.date | date: "%Y" == page.year %}
+      <li>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <span style="color:#777;">（{{ post.date | date: "%Y-%m-%d" }}）</span>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+<p><a href="{{ '/years/' | relative_url }}">← 回到年份索引</a></p>
