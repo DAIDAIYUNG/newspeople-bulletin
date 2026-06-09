@@ -1,0 +1,21 @@
+---
+layout: default
+title: 首頁
+---
+
+<h1>新聞人社訊</h1>
+
+<p>歡迎來到新聞人社訊網站。本網站提供歷年新聞、活動報導與社群資訊。</p>
+
+<h2>最新文章</h2>
+
+<ul>
+  {% for post in site.posts limit:5 %}
+    <li>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <span style="color:#777;">（{{ post.date | date: "%Y-%m-%d" }}）</span>
+    </li>
+  {% endfor %}
+</ul>
+
+<p><a href="{{ "/years/" | relative_url }}">查看年份索引 →</a></p>
