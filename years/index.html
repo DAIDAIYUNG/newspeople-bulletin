@@ -1,17 +1,95 @@
 ---
 layout: default
-title: 年份索引
+title: 首頁
 ---
 
-<h1>年份索引</h1>
+<h1>新聞人社訊</h1>
 
+<!-- 🔥 隨機文章輪播 -->
+<div id="carousel" class="carousel">
+  <div class="carousel-inner">
+    {% for post in site.posts %}
+      <div class="carousel-item">
+        <a href="{{ post.url | relative_url }}">
+          {% if post.image %}
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
+          {% endif %}
+          <h3>{{ post.title }}</h3>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<h2>最新文章</h2>
 <ul>
-  {% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
-  {% for year in years %}
+  {% for post in site.posts limit:5 %}
     <li>
-      <a href="{{ '/years/' | append: year.name | append: '/' | relative_url }}">
-        {{ year.name }} 年
-      </a>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <span style="color:#777;">（{{ post.date | date: "%Y-%m-%d" }}）</span>
     </li>
   {% endfor %}
 </ul>
+
+<p><a href="{{ "/years/" | relative_url }}">查看年份索引 →</a></p>
+
+<!-- 🔥 輪播 JavaScript：隨機排序 + 自動播放 -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const items = Array.from(document.querySelectorAll(".carousel-item"));
+  const container = document.querySelector(".carousel-inner");
+
+  // 隨機排序
+  items.sort(() => Math.random() - 0.5);
+
+  // 重新插入
+  items.forEach(item => container.appendChild(item));
+
+  // 自動輪播
+  let index = 0;
+  function showNext() {
+    items.forEach((item, i) => {
+      item.style.display = i === index ? "block" : "none";
+    });
+    index = (index + 1) % items.length;
+  }
+
+  showNext();
+  setInterval(showNext, 4000);
+});
+</script>
+
+<!-- 🔥 輪播 CSS（手機友善） -->
+<style>
+.carousel {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.carousel-item {
+  display: none;
+  text-align: center;
+}
+
+.carousel-item img {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.carousel-item h3 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .carousel-item img {
+    max-height: 220px;
+  }
+  .carousel-item h3 {
+    font-size: 1rem;
+  }
+}
+</style>
